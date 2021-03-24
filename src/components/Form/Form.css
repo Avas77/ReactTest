@@ -1,0 +1,42 @@
+.form {
+  height: 100vh;
+}
+
+.myform {
+  width: 80%;
+  margin: 120px auto;
+  text-align: left;
+}
+
+.input {
+  width: 50%;
+  height: 30px;
+  border-radius: 2px;
+  outline: none;
+  border: 1px solid slategray;
+}
+
+.wrong {
+  border: 1.5px solid #ef233c;
+}
+
+.right {
+  border: 1.5px solid #5c9210;
+}
+
+.field {
+  display: flex;
+  justify-content: space-between;
+}
+
+.noshow {
+  visibility: hidden;
+}
+
+.show {
+  visibility: visible;
+}
+
+.field label {
+  width: 20%;
+}
