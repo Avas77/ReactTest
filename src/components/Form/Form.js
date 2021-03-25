@@ -79,6 +79,7 @@ const Form = () => {
       datas[ind].district = district;
       datas[ind].province = province;
       datas[ind].country = country;
+      setAct(0);
     }
 
     setData(datas);
@@ -116,6 +117,7 @@ const Form = () => {
 
   return (
     <div className="form">
+      <h1>Please Provide Your Info</h1>
       <form className="myform" onSubmit={formDataHandler}>
         <div className="field">
           <label htmlFor="Name">Name</label>
@@ -264,10 +266,10 @@ const Form = () => {
           <i className="fas fa-check noshow"></i>
         </div>
         <br />
-        <input type="submit" value="submit" />
+        <input type="submit" value="Submit" className="btn" />
       </form>
       <table className="data">
-        <tr>
+        <tr className="table-header">
           <th>SNo.</th>
           <th>Name</th>
           <th>Email</th>
@@ -292,10 +294,18 @@ const Form = () => {
             <td>{dat.province}</td>
             <td>{dat.country}</td>
             <td>
-              <button onClick={() => editHandler(i)}>Edit</button>
+              <button
+                onClick={() => editHandler(i)}
+                className="btn-small"
+                style={{ padding: "5px 12px" }}
+              >
+                Edit
+              </button>
             </td>
             <td>
-              <button onClick={() => deleteHandler(i)}>Delete</button>
+              <button onClick={() => deleteHandler(i)} className="btn-small">
+                Delete
+              </button>
             </td>
           </tr>
         ))}
