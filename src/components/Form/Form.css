@@ -4,7 +4,7 @@
 
 .myform {
   width: 80%;
-  margin: 120px auto;
+  margin: 120px auto 40px auto;
   text-align: left;
 }
 
@@ -17,11 +17,11 @@
 }
 
 .wrong {
-  border: 1.5px solid #ef233c;
+  border: 1.8px solid #ef233c;
 }
 
 .right {
-  border: 1.5px solid #5c9210;
+  border: 1.8px solid #5c9210;
 }
 
 .field {
@@ -35,8 +35,22 @@
 
 .show {
   visibility: visible;
+  color: #5c9210;
 }
 
 .field label {
   width: 20%;
+}
+
+.data {
+  width: 80%;
+  width: 80%;
+  margin: 0 auto;
+}
+.data,
+th,
+td {
+  border: 1px solid black;
+  border-collapse: collapse;
+  padding: 5px;
 }

@@ -13,19 +13,24 @@ const Form = () => {
   const [nameError, setNameError] = useState(null);
   const [emailError, setEmailError] = useState(null);
   const [phoneError, setPhoneError] = useState(null);
+  const [data, setData] = useState([]);
+  const [act, setAct] = useState(0);
+  const [index, setIndex] = useState("");
+  let datas = data;
 
   const changedHandler = (e) => {
     switch (e.target.name) {
       case "name":
+        setName(e.target.value);
         if (e.target.value === "") {
           setNameError(true);
         } else {
           setNameError(false);
         }
-        setName(e.target.value);
         break;
 
       case "email":
+        setEmail(e.target.value);
         if (
           /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(
             e.target.value
@@ -35,7 +40,6 @@ const Form = () => {
         } else {
           setEmailError(true);
         }
-        setEmail(e.target.value);
         break;
 
       case "phone":
@@ -46,10 +50,69 @@ const Form = () => {
           setPhoneError(false);
         }
         break;
+      default:
+        console.log("nothing");
     }
   };
 
-  const formDataHandler = () => {};
+  const formDataHandler = (e) => {
+    e.preventDefault();
+    if (act === 0) {
+      let dat = {
+        name,
+        email,
+        phone,
+        date,
+        city,
+        district,
+        province,
+        country,
+      };
+      datas.push(dat);
+    } else {
+      let ind = index;
+      datas[ind].name = name;
+      datas[ind].email = email;
+      datas[ind].phone = phone;
+      datas[ind].date = date;
+      datas[ind].city = city;
+      datas[ind].district = district;
+      datas[ind].province = province;
+      datas[ind].country = country;
+    }
+
+    setData(datas);
+    setName("");
+    setEmail("");
+    setPhone("");
+    setDate("");
+    setCity("");
+    setDistrict("");
+    setProvince("");
+    setCountry("Nepal");
+  };
+
+  const deleteHandler = (i) => {
+    let copyData = [...data];
+    console.log(copyData);
+    copyData.splice(i, 1);
+    setData(copyData);
+  };
+
+  const editHandler = (i) => {
+    let copyData = data[i];
+    console.log(copyData);
+    document.getElementById("name").value = copyData.name;
+    document.getElementById("email").value = copyData.email;
+    document.getElementById("phone").value = copyData.phone;
+    document.getElementById("date").value = copyData.date;
+    document.getElementById("city").value = copyData.city;
+    document.getElementById("district").value = copyData.district;
+    document.getElementById("province").value = copyData.province;
+    document.getElementById("country").value = copyData.country;
+    setAct(1);
+    setIndex(i);
+  };
 
   return (
     <div className="form">
@@ -57,6 +120,7 @@ const Form = () => {
         <div className="field">
           <label htmlFor="Name">Name</label>
           <input
+            id="name"
             type="text"
             placeholder="Your Name"
             name="name"
@@ -77,6 +141,7 @@ const Form = () => {
         <div className="field">
           <label htmlFor="Email">Email</label>
           <input
+            id="email"
             type="email"
             placeholder="Your Email"
             name="email"
@@ -97,6 +162,7 @@ const Form = () => {
         <div className="field">
           <label htmlFor="Phone">Phone Number</label>
           <input
+            id="phone"
             type="number"
             placeholder="Your Phone Number"
             name="phone"
@@ -117,6 +183,7 @@ const Form = () => {
         <div className="field">
           <label htmlFor="Date">Date of Birth</label>
           <input
+            id="date"
             type="date"
             placeholder="Your date of birth"
             name="date"
@@ -131,6 +198,7 @@ const Form = () => {
         <div className="field">
           <label htmlFor="City">City</label>
           <input
+            id="city"
             type="text"
             placeholder="Your City"
             name="city"
@@ -145,6 +213,7 @@ const Form = () => {
         <div className="field">
           <label htmlFor="District">District</label>
           <input
+            id="district"
             type="text"
             placeholder="Your date of birth"
             name="district"
@@ -159,6 +228,7 @@ const Form = () => {
         <div className="field">
           <label htmlFor="Province">Province</label>
           <select
+            id="province"
             onChange={(e) => setProvince(e.target.value)}
             name="province"
             value={province}
@@ -183,6 +253,7 @@ const Form = () => {
         <div className="field">
           <label htmlFor="Country">Country</label>
           <input
+            id="country"
             type="text"
             placeholder="Your Country"
             name="country"
@@ -195,6 +266,40 @@ const Form = () => {
         <br />
         <input type="submit" value="submit" />
       </form>
+      <table className="data">
+        <tr>
+          <th>SNo.</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Phone Number</th>
+          <th>Date</th>
+          <th>City</th>
+          <th>District</th>
+          <th>Province</th>
+          <th>Country</th>
+          <th>Edit</th>
+          <th>Delete</th>
+        </tr>
+        {data.map((dat, i) => (
+          <tr key={i}>
+            <td>{i + 1}</td>
+            <td>{dat.name}</td>
+            <td>{dat.email}</td>
+            <td>{dat.phone}</td>
+            <td>{dat.date}</td>
+            <td>{dat.city}</td>
+            <td>{dat.district}</td>
+            <td>{dat.province}</td>
+            <td>{dat.country}</td>
+            <td>
+              <button onClick={() => editHandler(i)}>Edit</button>
+            </td>
+            <td>
+              <button onClick={() => deleteHandler(i)}>Delete</button>
+            </td>
+          </tr>
+        ))}
+      </table>
     </div>
   );
 };
