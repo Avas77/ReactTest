@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Form.css";
 
 const Form = () => {
@@ -16,7 +16,23 @@ const Form = () => {
   const [data, setData] = useState([]);
   const [act, setAct] = useState(0);
   const [index, setIndex] = useState("");
+  const [sortType, setSortType] = useState("");
   let datas = data;
+
+  useEffect(() => {
+    console.log(sortType);
+    const sortArray = (type) => {
+      if (type === "ASC") {
+        const sorted = [...data].sort((a, b) => (a.name > b.name ? 1 : -1));
+        setData(sorted);
+      }
+      if (type === "DESC") {
+        const sorted = [...data].sort((a, b) => (a.name > b.name ? -1 : 1));
+        setData(sorted);
+      }
+    };
+    sortArray(sortType);
+  }, [sortType]);
 
   const changedHandler = (e) => {
     switch (e.target.name) {
@@ -122,6 +138,7 @@ const Form = () => {
         <div className="field">
           <label htmlFor="Name">Name</label>
           <input
+            required
             id="name"
             type="text"
             placeholder="Your Name"
@@ -143,6 +160,7 @@ const Form = () => {
         <div className="field">
           <label htmlFor="Email">Email</label>
           <input
+            required
             id="email"
             type="email"
             placeholder="Your Email"
@@ -164,6 +182,7 @@ const Form = () => {
         <div className="field">
           <label htmlFor="Phone">Phone Number</label>
           <input
+            required
             id="phone"
             type="number"
             placeholder="Your Phone Number"
@@ -185,6 +204,7 @@ const Form = () => {
         <div className="field">
           <label htmlFor="Date">Date of Birth</label>
           <input
+            required
             id="date"
             type="date"
             placeholder="Your date of birth"
@@ -200,6 +220,7 @@ const Form = () => {
         <div className="field">
           <label htmlFor="City">City</label>
           <input
+            required
             id="city"
             type="text"
             placeholder="Your City"
@@ -215,9 +236,10 @@ const Form = () => {
         <div className="field">
           <label htmlFor="District">District</label>
           <input
+            required
             id="district"
             type="text"
-            placeholder="Your date of birth"
+            placeholder="Your District"
             name="district"
             value={district}
             className="input"
@@ -236,6 +258,7 @@ const Form = () => {
             value={province}
             className="input"
             name="province"
+            required
           >
             <option value="">Choose a province</option>
             <option value="Province No. 1">Province No. 1</option>
@@ -255,6 +278,7 @@ const Form = () => {
         <div className="field">
           <label htmlFor="Country">Country</label>
           <input
+            required
             id="country"
             type="text"
             placeholder="Your Country"
@@ -266,12 +290,24 @@ const Form = () => {
           <i className="fas fa-check noshow"></i>
         </div>
         <br />
-        <input type="submit" value="Submit" className="btn" />
+        <button type="submit" className="btn">
+          Submit
+        </button>
       </form>
       <table className="data">
         <tr className="table-header">
           <th>SNo.</th>
-          <th>Name</th>
+          <th>
+            Name
+            <select
+              onChange={(e) => setSortType(e.target.value)}
+              className="sort"
+            >
+              <option value="">Sort</option>
+              <option value="ASC">ASC</option>
+              <option value="DESC">DESC</option>
+            </select>
+          </th>
           <th>Email</th>
           <th>Phone Number</th>
           <th>Date</th>
