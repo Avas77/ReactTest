@@ -1,7 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./Form.css";
+import uuid from "react-uuid";
+import { connect } from "react-redux";
+import TableData from "../TableData/TableData";
 
-const Form = () => {
+const Form = (props) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -13,26 +16,6 @@ const Form = () => {
   const [nameError, setNameError] = useState(null);
   const [emailError, setEmailError] = useState(null);
   const [phoneError, setPhoneError] = useState(null);
-  const [data, setData] = useState([]);
-  const [act, setAct] = useState(0);
-  const [index, setIndex] = useState("");
-  const [sortType, setSortType] = useState("");
-  let datas = data;
-
-  useEffect(() => {
-    console.log(sortType);
-    const sortArray = (type) => {
-      if (type === "ASC") {
-        const sorted = [...data].sort((a, b) => (a.name > b.name ? 1 : -1));
-        setData(sorted);
-      }
-      if (type === "DESC") {
-        const sorted = [...data].sort((a, b) => (a.name > b.name ? -1 : 1));
-        setData(sorted);
-      }
-    };
-    sortArray(sortType);
-  }, [sortType]);
 
   const changedHandler = (e) => {
     switch (e.target.name) {
@@ -73,32 +56,22 @@ const Form = () => {
 
   const formDataHandler = (e) => {
     e.preventDefault();
-    if (act === 0) {
-      let dat = {
-        name,
-        email,
-        phone,
-        date,
-        city,
-        district,
-        province,
-        country,
-      };
-      datas.push(dat);
-    } else {
-      let ind = index;
-      datas[ind].name = name;
-      datas[ind].email = email;
-      datas[ind].phone = phone;
-      datas[ind].date = date;
-      datas[ind].city = city;
-      datas[ind].district = district;
-      datas[ind].province = province;
-      datas[ind].country = country;
-      setAct(0);
-    }
-
-    setData(datas);
+    const data = {
+      id: uuid(),
+      name,
+      email,
+      phone,
+      date,
+      city,
+      district,
+      province,
+      country,
+      change: false,
+    };
+    props.dispatch({
+      type: "ADD",
+      data,
+    });
     setName("");
     setEmail("");
     setPhone("");
@@ -107,28 +80,10 @@ const Form = () => {
     setDistrict("");
     setProvince("");
     setCountry("Nepal");
-  };
-
-  const deleteHandler = (i) => {
-    let copyData = [...data];
-    console.log(copyData);
-    copyData.splice(i, 1);
-    setData(copyData);
-  };
-
-  const editHandler = (i) => {
-    let copyData = data[i];
-    console.log(copyData);
-    document.getElementById("name").value = copyData.name;
-    document.getElementById("email").value = copyData.email;
-    document.getElementById("phone").value = copyData.phone;
-    document.getElementById("date").value = copyData.date;
-    document.getElementById("city").value = copyData.city;
-    document.getElementById("district").value = copyData.district;
-    document.getElementById("province").value = copyData.province;
-    document.getElementById("country").value = copyData.country;
-    setAct(1);
-    setIndex(i);
+    setNameError(null);
+    setPhoneError(null);
+    setEmailError(null);
+    console.log(data);
   };
 
   return (
@@ -294,60 +249,15 @@ const Form = () => {
           Submit
         </button>
       </form>
-      <table className="data">
-        <tr className="table-header">
-          <th>SNo.</th>
-          <th>
-            Name
-            <select
-              onChange={(e) => setSortType(e.target.value)}
-              className="sort"
-            >
-              <option value="">Sort</option>
-              <option value="ASC">ASC</option>
-              <option value="DESC">DESC</option>
-            </select>
-          </th>
-          <th>Email</th>
-          <th>Phone Number</th>
-          <th>Date</th>
-          <th>City</th>
-          <th>District</th>
-          <th>Province</th>
-          <th>Country</th>
-          <th>Edit</th>
-          <th>Delete</th>
-        </tr>
-        {data.map((dat, i) => (
-          <tr key={i}>
-            <td>{i + 1}</td>
-            <td>{dat.name}</td>
-            <td>{dat.email}</td>
-            <td>{dat.phone}</td>
-            <td>{dat.date}</td>
-            <td>{dat.city}</td>
-            <td>{dat.district}</td>
-            <td>{dat.province}</td>
-            <td>{dat.country}</td>
-            <td>
-              <button
-                onClick={() => editHandler(i)}
-                className="btn-small"
-                style={{ padding: "5px 12px" }}
-              >
-                Edit
-              </button>
-            </td>
-            <td>
-              <button onClick={() => deleteHandler(i)} className="btn-small">
-                Delete
-              </button>
-            </td>
-          </tr>
-        ))}
-      </table>
+      <TableData />
     </div>
   );
 };
 
-export default Form;
+const mapStateToProps = (state) => {
+  return {
+    posts: state,
+  };
+};
+
+export default connect(mapStateToProps)(Form);
