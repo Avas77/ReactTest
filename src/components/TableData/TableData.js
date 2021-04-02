@@ -25,17 +25,7 @@ const TableData = (props) => {
       <h1>Data in Tabular Form</h1>
       <table className="data">
         <tr className="table-header">
-          <th>
-            Name
-            <select
-              className="sort"
-              onChange={(e) => setSortType(e.target.value)}
-            >
-              <option value="">Sort</option>
-              <option value="ASC">ASC</option>
-              <option value="DESC">DESC</option>
-            </select>
-          </th>
+          <th>Name</th>
           <th>Email</th>
           <th>Phone Number</th>
           <th>Date</th>
